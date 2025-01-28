@@ -44,7 +44,7 @@ try:
         print(usage)
     else:
         # Start the listener
-        print("Starting the listener")
+        print("Starting the listener for channel: {channel}".format(channel=opts[2].__getitem__(1)))
         startListener(opts)
 
 except getopt.GetoptError:
