@@ -9,7 +9,7 @@ def startListener(opts):
 
     api_id = int(opts[0].__getitem__(1))
     api_hash = opts[1].__getitem__(1)
-    channel = opts[2].__getitem__(1)
+    channel = opts[2].__getitem__(1).lstrip('@')
 
     shortURLRegex = r"https:\/\/t\.me\/\+(\S+)"
 
@@ -44,7 +44,7 @@ try:
         print(usage)
     else:
         # Start the listener
-        print("Starting the listener for channel: {channel}".format(channel=opts[2].__getitem__(1)))
+        print("Starting the listener for channel: {channel}".format(channel=opts[2].__getitem__(1).lstrip('@')))
         startListener(opts)
 
 except getopt.GetoptError:
