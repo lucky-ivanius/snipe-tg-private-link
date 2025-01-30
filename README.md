@@ -52,14 +52,14 @@ pip install -r requirements.txt
 ## Usage
 
 ```bash
-python bot.py --api_id=<api_id> --api_hash=<api_hash> --channel=<channel>
+python bot.py --api_id=<api_id> --api_hash=<api_hash> --channel=<channel> [--session=<session>]
 ```
 
 > Disclaimer: when running for the first time, you will be prompted to authenticate your Telegram account. The authentication process (phone number, verification code, and 2FA password if enabled) is handled automatically by the Telethon library. You only need to follow the prompts in the terminal.
 
 #### Cleanup
 
-To remove your Telegram session, simply delete the `auth` folder in the current directory.
+To remove your Telegram session, simply delete the `auth` folder or the specified session name inside the `auth` folder.
 
 ## Disclaimer
 
