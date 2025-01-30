@@ -5,13 +5,13 @@ from telethon.errors import SessionPasswordNeededError
 from telethon import TelegramClient, events, sync
 from telethon.tl.functions.messages import (ImportChatInviteRequest)
 
-def startListener(opts):
+def start_listener(opts):
 
     api_id = int(opts[0].__getitem__(1))
     api_hash = opts[1].__getitem__(1)
     channel = opts[2].__getitem__(1).lstrip('@')
 
-    shortURLRegex = r"https:\/\/t\.me\/\+(\S+)"
+    url_regex = r"https:\/\/t\.me\/\+(\S+)"
 
     user_input_channel = 'https://t.me/' + channel
 
@@ -19,15 +19,17 @@ def startListener(opts):
     client.start()
 
     @client.on(events.NewMessage(chats=user_input_channel))
-    async def newMessageListener(event):
-        messageFromEvent = event.message.message
-        print("Received event with message:\n" + messageFromEvent)
-        filteredMessage = re.findall(
-            shortURLRegex, messageFromEvent, flags=re.IGNORECASE)
-        if len(filteredMessage) != 0:
-            for hash in filteredMessage:
-                updates = await client(ImportChatInviteRequest(hash))
-                print(updates)
+    async def new_message_listener(event):
+        event_message = event.message.message
+        filtered_message = re.findall(
+            url_regex, event_message, flags=re.IGNORECASE)
+        if len(filtered_message) != 0:
+            for hash in filtered_message:
+                try:
+                    update = await client(ImportChatInviteRequest(hash))
+                    print(update)
+                except Exception as e:
+                    print(f"Error joining channel with hash {hash}: {str(e)}")
 
     with client:
         client.run_until_disconnected()
@@ -45,7 +47,7 @@ try:
     else:
         # Start the listener
         print("Starting the listener for channel: {channel}".format(channel=opts[2].__getitem__(1).lstrip('@')))
-        startListener(opts)
+        start_listener(opts)
 
 except getopt.GetoptError:
     print(usage)
